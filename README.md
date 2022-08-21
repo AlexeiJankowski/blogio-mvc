@@ -9,7 +9,7 @@ It contains
 - writer mode (read/write posts)
 - user administration mode for managing users/roles
   
-Todo's:
+Todo:
 
 - [ ] comments
 - [ ] image format check
