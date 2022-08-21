@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+
+
+<table class="table mt-4">
+    <tr>
+        <th>Email</th>
+        <th></th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>
+                @user.Email
+            </td>
+            <td>
+                <div style="float: right">
+                    <form method="post">
+                        <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@user.Id">Edit User</a>
+                        <a class="btn btn-outline-warning" asp-action="ChangePassword" asp-route-id="@user.Id">Change Password</a>
+                        <button type="submit" class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@user.Id">Delete User</button>
+                    </form>
+                </div>                
+            </td>
+        </tr>
+    }
+</table>

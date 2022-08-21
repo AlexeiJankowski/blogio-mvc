@@ -1,0 +1,52 @@
+@using Blogio.ViewModels
+@model PostViewModel
+
+<div class="col-12 pt-4 pb-4">
+    <div class="card">
+        <div class="card-body">
+            
+            <h3>@Model.Title</h3>
+
+            
+            <img src="@Model.Picture" class="p-4" alt="Sample Image" style="border-radius: 0; max-height: 50vh; float: left">
+
+            <p class="pt-4">@Model.Text</p>
+        </div>
+        <div class="card-footer pt-3 pb-0">
+            <div class="row">
+                <div class="col-6">
+                    <form method="post">
+                        <input type="hidden" asp-for="@Model.PostId">
+                        <input type="hidden" asp-for="@Model.Rating">                                  
+                        <div style="display: inline-block;">
+                            <p style="float: left;">Rating:&nbsp;&nbsp;&nbsp;</p>
+                            @for(int i = 1; i <= 5; i++)
+                            {
+                                if(Model.Rating == i)
+                                {
+                                    <input type="radio" asp-for="@Model.NewRating" value="@i" checked="checked">
+                                }
+                                else
+                                {
+                                    <input type="radio" asp-for="@Model.NewRating" value="@i">
+                                }
+                                
+                            }&nbsp;&nbsp;
+                            <button class="btn btn-sm btn-outline-warning" type="submit">Rate And Read Next Article</button>
+                        </div>     
+                    </form>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-row-reverse">
+                        <div style="padding-rigth: 4px;">
+                            <p>Author: @Model.Author.NickName &nbsp;&nbsp;&nbsp; </p>
+                        </div>
+                        <div style="padding-rigth: 4px;">
+                            <p>Posted: @Model.Date &nbsp;&nbsp;&nbsp; </p>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

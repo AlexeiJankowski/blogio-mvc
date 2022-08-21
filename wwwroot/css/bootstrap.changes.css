@@ -1,0 +1,29 @@
+.btn {
+    border-radius: 0;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.page-item.active .page-link {
+    border: 1px solid darkgray;
+    background: #23272b;
+}
+
+.page-item .page-link {    
+    color: #252525;
+}
+
+.page-item .active {
+    border: 1px solid #ffbb33;
+    background: #ffffff;
+    font-weight: bold;
+    color: #ffbb33;
+}
+
+.page-item .page-link:hover{
+    border: 1px solid darkgray;
+    background: #ffbb33;
+    color: #252525;
+}

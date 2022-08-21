@@ -1,0 +1,27 @@
+@using Blogio.Models
+@model Blogio.PaginatedList
+
+<div class="card mt-4">
+    <div class="card-body"> 
+            <h4>Search Results</h4>
+            
+            <table class="table mt-4">
+                @foreach (Post post in @Model.Posts)
+                    {
+                        <tr>
+                            <td>
+                                <h5>@post.Title</h5>
+                            </td>
+                            <td>
+                                <p>@(new String(@post.Text.Take(100).ToArray()))</p>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-warning" asp-action="Details" asp-route-id="@post.PostId" style="float: right;">Read</a>
+                            </td>
+                        </tr>   
+                    }
+            </table>
+            
+            
+    </div>
+</div>

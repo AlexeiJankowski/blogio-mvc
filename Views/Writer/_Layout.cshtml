@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.changes.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>@(ViewBag.Title ?? "Blogio")</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-action="Index">Blogio Writer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">User's View</a>  
+                @if(User.IsInRole("Admin"))
+                {
+                    <a class="nav-link" asp-controller="Roles" asp-action="Index">Manage Roles</a>
+                }              
+                <a class="nav-link" asp-action="Create">Create New Post</a>
+                @if(User.Identity.IsAuthenticated)
+                {    
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <input class="nav-link btn" id="logout" type="submit" value="Log Out"/>
+                    </form>
+                }
+                else
+                {
+                    <a class="nav-link" asp-controller="Account" asp-action="Login">Log In</a>
+                    <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                }   
+            </div>
+        </div>  
+        <form method="get" class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchQuery">
+            <button class="btn btn-outline-light" type="submit" asp-controller="Writer" asp-action="SearchResult">Search</button>
+        </form>
+    </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>    
+</body>
+</html>

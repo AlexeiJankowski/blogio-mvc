@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h4 class="card-title">User List</h4>
+
+        <table class="table">
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>
+                        <a class="btn btn-outline-danger" asp-action="Edit" asp-route-userId="@user.Id" style="float: right;">Edit User Rights</a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <div class="d-grid mt-2">
+            <a class="btn btn-outline-warning" asp-action="Index" style="width: 10%;">Roles List</a>
+        </div>   
+    </div>
+</div>

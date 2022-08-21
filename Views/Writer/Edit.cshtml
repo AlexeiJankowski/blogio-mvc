@@ -1,0 +1,28 @@
+@using Blogio.ViewModels
+@model PostViewModel
+
+<div class="card mt-4">
+    <div class="card-body">
+        <form enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PostId" />
+            <input type="hidden" asp-for="Picture" />
+            <div class="form-group mb-2">
+                <label><h5>Title</h5></label>
+                <span class="text-danger" asp-validation-for="Title" style="float: right;"></span>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="form-group mb-3">
+                <label><h5>Text</h5></label>
+                <span class="text-danger" asp-validation-for="Text" style="float: right;"></span>
+                <textarea asp-for="Text" class="form-control" rows="15"></textarea>
+            </div>
+            <div class="form-group mb-2">
+                <label><h5>Choose a Picture</h5></label><br>
+                <input asp-for="PreviewPicture" type="file" class="form-control-file">
+            </div>
+            <button asp-action="Edit" type="submit" class="btn btn-outline-warning">Submit</button>
+        </form>
+    </div>
+</div>
+

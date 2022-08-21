@@ -1,0 +1,33 @@
+@using Blogio.ViewModels
+@model RegisterViewModel
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h4>Register</h4>
+
+        <form method="post">
+            <div asp-validation-summary="All"></div>
+            <div class="form-group mb-2">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="NickName"></label>
+                <input asp-for="NickName" class="form-control">
+                <span asp-validation-for="NickName"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control">
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="PasswordConfirm"></label>
+                <input asp-for="PasswordConfirm" class="form-control">
+                <span asp-validation-for="PasswordConfirm"></span>
+            </div>
+            <button type="submit" class="btn btn-outline-warning">Submit</button>
+        </form>
+    </div>
+</div>

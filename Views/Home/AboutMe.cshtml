@@ -1,0 +1,19 @@
+@using Blogio.ViewModels
+@model AboutMeViewModel
+
+<div class="card mt-4">
+    <div class="card-body text-center">
+        <h2>@Model.Title</h2> <br>
+        @if(@Model.Picture != null)
+        {
+            <img src="@Model.Picture" alt="@Model.Picture" style="height: 20vh; width: 20vh; border-radius: 50%; "> <br> <br>
+        }
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <h3 class="text-center">@(new String(Model.Text.Take(350).ToArray()))</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

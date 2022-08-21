@@ -1,0 +1,7 @@
+.mycard:nth-child(even) {
+    background-color: #c4c4c4;
+}
+
+#logout {
+    --bs-btn-border-width: 0px;
+}
