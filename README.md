@@ -15,6 +15,7 @@ Todo's:
 - [ ] image format check
 - [ ] user's pictures/photos
 
-![]()
+![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/1.png)
+![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/3.png)
 
 [I got placeholders photos from](https://unsplash.com/@rhamely)
