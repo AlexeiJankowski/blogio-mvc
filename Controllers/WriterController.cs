@@ -4,10 +4,11 @@ using Blogio.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Blogio.ViewModels;
+using System.Diagnostics;
 
 namespace Blogio.Controllers
 {
-    [Authorize(Roles="Writer,Admin")]
+    [Authorize(Roles = "Writer,Admin")]
     public class WriterController : Controller
     {
         private AppDbContext _context;
@@ -24,7 +25,23 @@ namespace Blogio.Controllers
         public IActionResult Index(int page)
         {
             ViewBag.Title = "Blogio Writer";
-            List<Post> posts = _context.Posts.ToList();
+
+            List<PostViewModel> posts = new List<PostViewModel>();
+            foreach (var post in _context.Posts.ToList())
+            {
+                posts.Add(
+                    new PostViewModel
+                    {
+                        PostId = post.PostId,
+                        Title = post.Title,
+                        Text = post.Text,
+                        Picture = post.Picture,
+                        Date = post.Date,
+                        Rating = post.Rating,
+                        Author = post.Author
+                    }
+                );
+            }
             var model = new Blogio.PaginatedList
             {
                 Posts = posts,
@@ -41,26 +58,33 @@ namespace Blogio.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(PostViewModel postVM)
-        {            
+        {
             User author = await _userManager.GetUserAsync(HttpContext.User);
-            
+
             if (author.NickName != null)
             {
-                postVM.Author = new Author {NickName = author.NickName};
-                if(!_context.Authors.Any(a => a.NickName == author.NickName))
-                {                    
+                postVM.Author = new Author { NickName = author.NickName };
+                if (!_context.Authors.Any(a => a.NickName == author.NickName))
+                {
                     _context.Authors.Add(postVM.Author);
                     _context.SaveChanges();
                 }
-            }            
+            }
+
+            if (postVM.PreviewPicture != null)
+            {
+                postVM.Picture = GetPicture(postVM.PreviewPicture);
+            }
+            if (postVM.Picture == "Wrong Format")
+            {
+                ModelState.AddModelError("", "Wrong Picture Format (.jpg, .jpeg and .png formats are allowed)");
+            }
 
             if (ModelState.IsValid)
             {
-                if (postVM.PreviewPicture != null)
+
+                Post post = new Post
                 {
-                    postVM.Picture = GetPicture(postVM.PreviewPicture);
-                }
-                Post post = new Post {
                     Title = postVM.Title,
                     Text = postVM.Text,
                     Picture = postVM.Picture,
@@ -69,10 +93,10 @@ namespace Blogio.Controllers
                     Author = postVM.Author
                 };
                 _context.Posts.Add(post);
-                if(postVM.Author != null)
+                if (postVM.Author != null)
                 {
                     _context.Entry(post.Author).State = EntityState.Unchanged;
-                }                
+                }
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -84,7 +108,18 @@ namespace Blogio.Controllers
             var post = await _context.Posts.FirstOrDefaultAsync(p => p.PostId == id);
             if (post != null)
             {
-                return View(post);
+                return View(
+                    new PostViewModel
+                    {
+                        PostId = post.PostId,
+                        Title = post.Title,
+                        Text = post.Text,
+                        Picture = post.Picture,
+                        Date = post.Date,
+                        Rating = post.Rating,
+                        Author = post.Author
+                    }
+                );
             }
             return NotFound();
         }
@@ -98,7 +133,8 @@ namespace Blogio.Controllers
                 {
                     postVM.Picture = GetPicture(postVM.PreviewPicture);
                 }
-                Post post = new Post {
+                Post post = new Post
+                {
                     PostId = postVM.PostId,
                     Title = postVM.Title,
                     Text = postVM.Text,
@@ -135,9 +171,26 @@ namespace Blogio.Controllers
             {
                 ViewBag.Title = $"'{searchQuery}' Search Results";
 
+                List<PostViewModel> posts = new List<PostViewModel>();
+                foreach (var post in dbposts)
+                {
+                    posts.Add(
+                        new PostViewModel
+                        {
+                            PostId = post.PostId,
+                            Title = post.Title,
+                            Text = post.Text,
+                            Picture = post.Picture,
+                            Date = post.Date,
+                            Rating = post.Rating,
+                            Author = post.Author
+                        }
+                    );
+                }
+
                 var model = new Blogio.PaginatedList
                 {
-                    Posts = dbposts,
+                    Posts = posts,
                     PageSize = 10,
                     CurrentPage = 1
                 };
@@ -149,13 +202,21 @@ namespace Blogio.Controllers
 
         private string? GetPicture(IFormFile picture)
         {
-            if (picture == null)
+            if (picture != null)
             {
-                return null;
+                string[] extensions = { ".jpeg", ".jpg", ".png" };
+                foreach (var ext in extensions)
+                {
+                    if (Path.GetExtension(picture.FileName) == ext)
+                    {
+                        var downName = Path.Combine(_webHostEnvironment.WebRootPath + "/img/", Path.GetFileName(picture.FileName));
+                        picture.CopyTo(new FileStream(downName, FileMode.Create));
+                        return Path.Combine("/img/", Path.GetFileName(picture.FileName));
+                    }
+                }
+                return "Wrong Format";
             }
-            var downName = Path.Combine(_webHostEnvironment.WebRootPath + "/img/", Path.GetFileName(picture.FileName));
-            picture.CopyTo(new FileStream(downName, FileMode.Create));
-            return Path.Combine("/img/", Path.GetFileName(picture.FileName));
+            return null;
         }
     }
 }

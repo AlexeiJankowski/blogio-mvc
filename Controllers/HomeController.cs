@@ -26,9 +26,26 @@ namespace Blogio.Controllers
             {
                 page = 1;
             }
+
+            List<PostViewModel> posts = new List<PostViewModel>();
+            foreach(var post in _context.Posts.Include(a => a.Author).ToList())            
+            {
+                posts.Add(
+                    new PostViewModel {
+                    PostId = post.PostId,
+                    Title = post.Title,
+                    Text = post.Text,
+                    Picture = post.Picture,
+                    Date = post.Date,
+                    Rating = post.Rating,
+                    Author = post.Author
+                    }
+                );                
+            }
+
             var model = new Blogio.PaginatedList
             {
-                Posts = _context.Posts.Include(a => a.Author).ToList(),
+                Posts = posts,
                 PageSize = 6,
                 CurrentPage = page
             };
@@ -107,10 +124,26 @@ namespace Blogio.Controllers
             if (dbposts != null)
             {
                 ViewBag.Title = $"'{searchQuery}' Search Results";
+                
+                List<PostViewModel> posts = new List<PostViewModel>();
+                foreach(var post in dbposts)            
+                {
+                    posts.Add(
+                        new PostViewModel {
+                        PostId = post.PostId,
+                        Title = post.Title,
+                        Text = post.Text,
+                        Picture = post.Picture,
+                        Date = post.Date,
+                        Rating = post.Rating,
+                        Author = post.Author
+                        }
+                    );                
+                }
 
                 var model = new Blogio.PaginatedList
                 {
-                    Posts = dbposts,
+                    Posts = posts,
                     PageSize = 6,
                     CurrentPage = page
                 };

@@ -1,10 +1,10 @@
-using Blogio.Models;
+using Blogio.ViewModels;
 
 namespace Blogio
 {
     public class PaginatedList
     {
-        public List<Post> Posts { get; set; } = new List<Post>();
+        public List<PostViewModel> Posts { get; set; } = new List<PostViewModel>();
         public int PageSize { get; set; }
         public int CurrentPage { get; set; }
         public int MaxPage => Convert.ToInt32(Math.Ceiling((double)this.Posts.Count() / PageSize));
@@ -55,14 +55,12 @@ namespace Blogio
         }
 
 
-        public static List<Post> UsePagination(List<Post> post, int pageSize, int pageNumber)
+        public static List<PostViewModel> UsePagination(List<PostViewModel> post, int pageSize, int pageNumber)
         {
             return post.OrderByDescending(p => p.Date).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList() ?? post.Skip(pageNumber - 1).ToList();
         }
-
-        //Write an algorithm for the TopRatedPosts method
-        //Placeholder
-        public static List<Post> TopRatedPosts(List<Post> post, int pageSize, int pageNumber)
+        
+        public static List<PostViewModel> TopRatedPosts(List<PostViewModel> post, int pageSize, int pageNumber)
         {
             return post.OrderByDescending(r => r.Rating).Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList() ?? post.Skip(pageNumber - 1).ToList();
         }

@@ -1,9 +1,9 @@
-@using Blogio.Models
+@using Blogio.ViewModels
 @model Blogio.PaginatedList
 @{
     int itemsPerRow = 2;
     int itemsToSkip = 0;
-    List<Post> NewModel = Blogio.PaginatedList.UsePagination(Model.Posts, Model.PageSize, Model.CurrentPage);
+    List<PostViewModel> NewModel = Blogio.PaginatedList.UsePagination(Model.Posts, Model.PageSize, Model.CurrentPage);
 }
 
 <div class="col-9 pt-4">

@@ -1,7 +1,7 @@
-@using Blogio.Models
+@using Blogio.ViewModels
 @model Blogio.PaginatedList
 @{
-    List<Post> NewModel = Blogio.PaginatedList.UsePagination(Model.Posts, Model.PageSize, Model.CurrentPage);
+    List<PostViewModel> NewModel = Blogio.PaginatedList.UsePagination(Model.Posts, Model.PageSize, Model.CurrentPage);
 }
 
 <table class="table mt-4">
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var post in NewModel)
+        @foreach (PostViewModel post in NewModel)
         {
             <tr>
                 <td>@post.Title</td>
