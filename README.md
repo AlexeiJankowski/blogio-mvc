@@ -9,12 +9,13 @@ It contains
 - writer mode (read/write posts)
 - user administration mode for managing users/roles
   
-Todo's:
+Todo:
 
 - [ ] comments
 - [ ] image format check
 - [ ] user's pictures/photos
 
-![]()
+![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/1.png)
+![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/3.png)
 
-[I got placeholders photos from](https://unsplash.com/@rhamely)
+[I got placeholders photos from here](https://unsplash.com/@rhamely)
