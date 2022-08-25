@@ -12,7 +12,7 @@ It contains
 Todo:
 
 - [ ] comments
-- [ ] image format check
+- [X] image format check
 - [ ] user's pictures/photos
 
 ![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/1.png)
