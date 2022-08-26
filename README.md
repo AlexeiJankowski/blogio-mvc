@@ -11,9 +11,12 @@ It contains
   
 Todo:
 
-- [ ] comments
-- [X] image format check
-- [ ] user's pictures/photos
+- [ ] Comments
+- [X] Image Format Check
+- [ ] User's Pictures/Photos
+- [ ] JWT Tokens
+- [ ] Code Check
+- [ ] Post
 
 ![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/1.png)
 ![](https://github.com/AlexeiJankowski/blogio-mvc/blob/main/wwwroot/img/3.png)

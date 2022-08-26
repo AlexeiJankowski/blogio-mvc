@@ -11,5 +11,6 @@ namespace Blogio.Models
 
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<Author> Authors => Set<Author>();
+        public DbSet<Comment> Comments => Set<Comment>();
     }
 }

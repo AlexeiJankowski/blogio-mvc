@@ -55,7 +55,7 @@ namespace Blogio.Controllers
 
         public async Task<IActionResult> Details(long id)
         {
-            var dbpost = _context.Posts.Include(p => p.Author).FirstOrDefault(p => p.PostId == id);
+            var dbpost = _context.Posts.Include(p => p.Author).Include(p => p.Comments).FirstOrDefault(p => p.PostId == id);
 
             if (dbpost != null)
             {
@@ -68,7 +68,8 @@ namespace Blogio.Controllers
                     Picture = dbpost.Picture,
                     Rating = dbpost.Rating,
                     Date = dbpost.Date,
-                    Author = dbpost.Author
+                    Author = dbpost.Author,
+                    Comments = dbpost.Comments
                 };
                 return View(post);
             }
@@ -99,21 +100,38 @@ namespace Blogio.Controllers
         [HttpPost]
         public async Task<IActionResult> Details([FromForm]PostViewModel postVM)
         {
-            if(postVM.NewRating != null && postVM.Rating != null)
+            if(postVM.NewRating != null)
             {
-                postVM.Rating = (int)(Math.Ceiling((double)(postVM.NewRating + postVM.Rating) / 2));
-            }  
-            else if(postVM.NewRating != null && postVM.Rating == null)          
-            {
-                postVM.Rating = postVM.NewRating;
+                if(postVM.Rating != null)
+                {
+                    postVM.Rating = (int)(Math.Ceiling((double)(postVM.NewRating + postVM.Rating) / 2));
+                }  
+                else if(postVM.Rating == null)          
+                {
+                    postVM.Rating = postVM.NewRating;
+                }
+
+                Post post = new Post { PostId = postVM.PostId, Rating = postVM.Rating };
+
+                _context.Posts.Attach(post);
+                _context.Entry(post).Property(r => r.Rating).IsModified = true;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", new { id = ++post.PostId });
             }
             
-            Post post = new Post { PostId = postVM.PostId, Rating = postVM.Rating };
-
-            _context.Posts.Attach(post);
-            _context.Entry(post).Property(r => r.Rating).IsModified = true;
-            _context.SaveChanges();
-            return RedirectToAction("Details", new { id = ++post.PostId });
+            if(postVM.NewComment != null)
+            {
+                var comment = new Comment {
+                    PostId = postVM.PostId,
+                    Text = postVM.NewComment.Text,
+                    Date = DateTime.Now,
+                    UserName = User.Identity.Name
+                };
+                await _context.Comments.AddAsync(comment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details));
+            }
+            return RedirectToAction(nameof(Details));            
         }
 
         public IActionResult Search(string searchQuery, int page)
@@ -166,5 +184,19 @@ namespace Blogio.Controllers
                 return View(new AboutMeViewModel { Title = post.Title, Picture = post.Picture, Text = post.Text });
             }            
         }  
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var comment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentId == id);
+            long postId = 0;
+            if(comment != null)
+            {
+                postId = comment.PostId;
+                _context.Remove(comment);
+                await _context.SaveChangesAsync();
+            }  
+            return RedirectToAction(nameof(Details), new { id = postId });
+        }
     }
 }

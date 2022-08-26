@@ -20,5 +20,7 @@ namespace Blogio.Models
         // public int? NewRating { get; set; }
 
         public Author? Author { get; set; }
+
+        public List<Comment>? Comments { get; set; }
     }
 }
