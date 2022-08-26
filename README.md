@@ -11,7 +11,7 @@ It contains
   
 Todo:
 
-- [ ] Comments
+- [X] Comments
 - [X] Image Format Check
 - [ ] User's Pictures/Photos
 - [ ] JWT Tokens
